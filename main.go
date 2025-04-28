@@ -14,6 +14,7 @@ type WeatherData struct {
 	Temperature float64
 	Humidity    float64
 	Condition   string
+	Error       string // Add an Error field to hold error messages
 }
 
 func main() {
@@ -40,7 +41,10 @@ func main() {
 				Condition:   weatherData["weather"].([]interface{})[0].(map[string]interface{})["description"].(string),
 			})
 		} else {
-			c.HTML(http.StatusInternalServerError, "index.html", nil)
+			// Pass an error message to the template
+			c.HTML(http.StatusOK, "index.html", WeatherData{
+				Error: "Could not retrieve weather data. Please check the city name and try again.",
+			})
 		}
 	})
 
