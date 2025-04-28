@@ -1,0 +1,38 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        #loading {
+            display: none; /* Hide loading indicator by default */
+            font-size: 20px;
+            color: blue;
+        }
+    </style>
+    <script>
+        function showLoading() {
+            document.getElementById("loading").style.display = "block"; // Show loading indicator
+        }
+    </script>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form action="/weather" method="post" onsubmit="showLoading()">
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    <div id="loading">Loading...</div> <!-- Loading indicator -->
+    {{if .}}
+    <h2>Weather in {{.City}}:</h2>
+    <p>Temperature: {{.Temperature}}°F</p>
+    <p>Humidity: {{.Humidity}}%</p>
+    <p>Condition: {{.Condition}}</p>
+    {{end}}
+    {{if .Error}}
+    <p style="color: red;">Error: {{.Error}}</p> <!-- Display error message -->
+    {{end}}
+</body>
+</html>
