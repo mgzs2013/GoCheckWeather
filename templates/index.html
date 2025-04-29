@@ -5,11 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         #loading {
             display: none; /* Hide loading indicator by default */
             font-size: 20px;
             color: blue;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .error-message {
+            color: red;
         }
     </style>
     <script>
@@ -19,20 +29,39 @@
     </script>
 </head>
 <body>
-    <h1>Weather App</h1>
-    <form action="/weather" method="post" onsubmit="showLoading()">
-        <input type="text" name="city" placeholder="Enter city name" required>
-        <button type="submit">Get Weather</button>
-    </form>
-    <div id="loading">Loading...</div> <!-- Loading indicator -->
-    {{if .City}}
-    <h2>Weather in {{.City}}:</h2>
-    <p>Temperature: {{.Temperature}}°F</p>
-    <p>Humidity: {{.Humidity}}%</p>
-    <p>Condition: {{.Condition}}</p>
-    {{end}}
-    {{if .Error}}
-    <p style="color: red;">Error: {{.Error}}</p> <!-- Display error message -->
-    {{end}}
+    <div class="container">
+        <h1 class="text-center">Weather App</h1>
+        <form action="/weather" method="post" onsubmit="showLoading()">
+            <div class="form-group">
+                <input type="text" class="form-control" name="city" placeholder="Enter city name" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Get Weather</button>
+        </form>
+        <div id="loading" class="text-center">Loading...</div> <!-- Loading indicator -->
+        
+        {{if .City}} <!-- Check if City is set -->
+        <h2 class="text-center">Weather in {{.City}}:</h2>
+        <div class="alert alert-info">
+            <p>Temperature: {{.Temperature}}°F</p>
+            <p>Humidity: {{.Humidity}}%</p>
+            <p>Condition: {{.Condition}}</p>
+        </div>
+
+        <h3>5-Day Forecast:</h3>
+        <div class="alert alert-secondary">
+            {{range .Forecast}}
+                <p>Date: {{.Date}} - Temperature: {{.Temperature}}°F, Condition: {{.Condition}}</p>
+            {{end}}
+        </div>
+        {{end}}
+
+        {{if .Error}} <!-- Check if Error is set -->
+        <p class="error-message text-center">{{.Error}}</p> <!-- Display error message -->
+        {{end}}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
